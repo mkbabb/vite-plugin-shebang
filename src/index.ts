@@ -37,7 +37,7 @@ function getFileExtension(): string {
 }
 
 // Main plugin function
-export function prependShebangPlugin(
+export function prependShebang(
     options: PrependShebangOptions = defaultOptions
 ): Plugin {
     // Merge user-provided options with the default options

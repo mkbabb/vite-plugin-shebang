@@ -26,7 +26,7 @@ function getFileExtension() {
     return defaultOptions.fileExtension; // Default extension
 }
 // Main plugin function
-export function prependShebangPlugin(options = defaultOptions) {
+export function prependShebang(options = defaultOptions) {
     // Merge user-provided options with the default options
     const finalOptions = { ...defaultOptions, ...options };
     let fileExtension = options.fileExtension;

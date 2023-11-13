@@ -3,9 +3,9 @@ import os from "os";
 import path from "path";
 import { build } from "vite";
 import { describe, expect, it } from "vitest";
-import { PrependShebangOptions, prependShebangPlugin } from "../src";
+import { PrependShebangOptions, prependShebang } from "../src";
 
-describe("prependShebangPlugin", () => {
+describe("prependShebang", () => {
     it("should prepend shebang to cjs files", async () => {
         const options: PrependShebangOptions = {
             shebang: "#!/usr/bin/env node\n",
@@ -30,7 +30,7 @@ describe("prependShebangPlugin", () => {
         // Run Vite build with the plugin
         const buildOutput = await build({
             root: tempDir,
-            plugins: [prependShebangPlugin(options)],
+            plugins: [prependShebang(options)],
 
             build: {
                 write: false, // Prevents actual file writing for the test
