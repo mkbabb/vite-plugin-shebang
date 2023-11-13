@@ -4,9 +4,8 @@ A Vite plugin to prepend a custom shebang to JavaScript files based on the modul
 
 ## Features
 
--   Prepends a custom shebang to JavaScript files.
--   Automatically detects the file extension (`.cjs`, `.mjs`, `.js`) based on the `type` specified in `package.json`.
--   Allows custom configuration for the shebang string and file extension.
+-   Prepends a custom shebang to JavaScript files
+-   Automatically detects bin files based on the `bin` field in `package.json`
 
 ## Installation
 
@@ -23,9 +22,9 @@ Specify your options:
 ```ts
 const options: PrependShebangOptions = {
     // The shebang string to prepend to the file.
-    shebang: "#!/usr/bin/env node\n",
-    // Keep null for automatic detection, or specify your out file extension directly.
-    fileExtension: ".cjs",
+    shebang: "#!/usr/bin/env node",
+    // The output file names to prepend the shebang to.
+    files: ["index.cjs"],
 };
 ```
 
