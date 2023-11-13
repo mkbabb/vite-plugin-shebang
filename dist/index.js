@@ -2,43 +2,44 @@ import fs from "fs";
 import path from "path";
 // Set the default options
 export const defaultOptions = {
-    shebang: "#!/usr/bin/env node\n",
-    fileExtension: ".js",
+    shebang: "#!/usr/bin/env node",
+    files: ["index.js"],
 };
 // Function to get the file extension based on package.json
-function getFileExtension() {
+function getBinFiles() {
     const packageJsonPath = path.resolve(process.cwd(), "package.json");
     if (fs.existsSync(packageJsonPath)) {
         try {
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-            const type = packageJson.type;
-            if (type === "module") {
-                return ".cjs";
-            }
-            else if (type === "commonjs") {
-                return ".js";
+            const bin = packageJson.bin;
+            if (bin != null) {
+                return Object.keys(bin);
             }
         }
         catch (error) {
             console.error("Error reading package.json:", error);
         }
     }
-    return defaultOptions.fileExtension;
+    return [];
 }
 // Main plugin function
 export function prependShebang(options = defaultOptions) {
-    var _a;
+    var _a, _b;
     // Merge user-provided options with the default options
-    const shebang = (_a = options.shebang) !== null && _a !== void 0 ? _a : defaultOptions.shebang;
+    let shebang = (_a = options.shebang) !== null && _a !== void 0 ? _a : defaultOptions.shebang;
+    // Trim trailing newlines and then add a single newline
+    shebang = shebang.replace(/\n+$/, "") + "\n";
     const shebangLines = shebang.split("\n").length - 1;
-    let fileExtension = options.fileExtension;
+    const files = (_b = options.files) !== null && _b !== void 0 ? _b : defaultOptions.files;
     return {
         name: "prepend-shebang",
         buildStart() {
-            fileExtension !== null && fileExtension !== void 0 ? fileExtension : (fileExtension = getFileExtension());
+            files.push(...getBinFiles());
         },
         renderChunk(code, chunk, options) {
-            if (chunk.fileName.endsWith(fileExtension !== null && fileExtension !== void 0 ? fileExtension : "")) {
+            if (files.includes(chunk.fileName) &&
+                chunk.type === "chunk" &&
+                chunk.isEntry) {
                 const modifiedCode = shebang + code;
                 // Generate a very basic sourcemap
                 const lines = code.split("\n").length;

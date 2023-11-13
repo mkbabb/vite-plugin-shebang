@@ -7,12 +7,12 @@ import { PrependShebangOptions, prependShebang } from "../src";
 
 describe("prependShebang", () => {
     it("should prepend shebang to cjs files", async () => {
-        const options: PrependShebangOptions = {
-            shebang: "#!/usr/bin/env node\n",
-            fileExtension: ".cjs",
+        const options: Partial<PrependShebangOptions> = {
+            shebang: "#!/usr/bin/env node",
+            files: ["index.cjs"],
         };
 
-        const EXPECTED = `${options.shebang}\"use strict\";console.log(\"Hello, world!\");\n`;
+        const EXPECTED = `${options.shebang}\n\"use strict\";console.log(\"Hello, world!\");\n`;
 
         // Create a temporary directory
         const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "vite-plugin-"));
@@ -34,12 +34,13 @@ describe("prependShebang", () => {
 
             build: {
                 write: false, // Prevents actual file writing for the test
-                outDir: tempDir,
+                outDir: path.resolve(tempDir, "dist"),
+                emptyOutDir: true,
 
                 lib: {
                     entry: path.resolve(tempDir, "index.js"),
-                    fileName: "plugged",
-                    formats: ["cjs", "es"],
+                    fileName: "index",
+                    formats: ["cjs"],
                 },
             },
         });
