@@ -4,4 +4,4 @@ export type PrependShebangOptions = {
     fileExtension: string;
 };
 export declare const defaultOptions: PrependShebangOptions;
-export declare function prependShebang(options?: PrependShebangOptions): Plugin;
+export declare function prependShebang(options?: Partial<PrependShebangOptions>): Plugin;

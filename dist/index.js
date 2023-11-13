@@ -8,6 +8,7 @@ export const defaultOptions = {
 // Function to get the file extension based on package.json
 function getFileExtension() {
     const packageJsonPath = path.resolve(process.cwd(), "package.json");
+    console.log("packageJsonPath:", packageJsonPath);
     if (fs.existsSync(packageJsonPath)) {
         try {
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
@@ -23,12 +24,14 @@ function getFileExtension() {
             console.error("Error reading package.json:", error);
         }
     }
-    return defaultOptions.fileExtension; // Default extension
+    return defaultOptions.fileExtension;
 }
 // Main plugin function
 export function prependShebang(options = defaultOptions) {
+    var _a;
     // Merge user-provided options with the default options
-    const finalOptions = { ...defaultOptions, ...options };
+    const shebang = (_a = options.shebang) !== null && _a !== void 0 ? _a : defaultOptions.shebang;
+    const shebangLines = shebang.split("\n").length - 1;
     let fileExtension = options.fileExtension;
     return {
         name: "prepend-shebang",
@@ -36,10 +39,8 @@ export function prependShebang(options = defaultOptions) {
             fileExtension !== null && fileExtension !== void 0 ? fileExtension : (fileExtension = getFileExtension());
         },
         renderChunk(code, chunk, options) {
-            if (chunk.fileName.endsWith(fileExtension)) {
-                const modifiedCode = finalOptions.shebang + code;
-                // Count the number of lines in the shebang string
-                const shebangLines = finalOptions.shebang.split("\n").length - 1;
+            if (chunk.fileName.endsWith(fileExtension !== null && fileExtension !== void 0 ? fileExtension : "")) {
+                const modifiedCode = shebang + code;
                 // Generate a very basic sourcemap
                 const lines = code.split("\n").length;
                 const mappings = Array(lines)
