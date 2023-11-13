@@ -26,7 +26,7 @@ function getBinFiles(): string[] {
 
             const bin = packageJson.bin;
             if (bin != null) {
-                return Object.keys(bin);
+                return Object.values(bin).map((file) => path.basename(file as string));
             }
         } catch (error) {
             console.error("Error reading package.json:", error);

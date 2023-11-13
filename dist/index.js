@@ -13,7 +13,7 @@ function getBinFiles() {
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
             const bin = packageJson.bin;
             if (bin != null) {
-                return Object.keys(bin);
+                return Object.values(bin).map((file) => path.basename(file));
             }
         }
         catch (error) {
