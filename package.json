@@ -1,7 +1,7 @@
 {
     "name": "vite-plugin-shebang",
-    "version": "0.1.5",
-    "description": "Vite plugin to prepend a shebang to an output file.",
+    "version": "0.1.6",
+    "description": "Vite plugin to prepend a shebang to output flies.",
     "main": "dist/index.js",
     "type": "module",
     "homepage": "https://github.com/mkbabb/vite-plugin-shebang",
