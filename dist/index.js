@@ -8,7 +8,6 @@ export const defaultOptions = {
 // Function to get the file extension based on package.json
 function getFileExtension() {
     const packageJsonPath = path.resolve(process.cwd(), "package.json");
-    console.log("packageJsonPath:", packageJsonPath);
     if (fs.existsSync(packageJsonPath)) {
         try {
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));

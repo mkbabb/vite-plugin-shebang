@@ -18,8 +18,6 @@ export const defaultOptions: PrependShebangOptions = {
 function getFileExtension(): string {
     const packageJsonPath = path.resolve(process.cwd(), "package.json");
 
-    console.log("packageJsonPath:", packageJsonPath);
-
     if (fs.existsSync(packageJsonPath)) {
         try {
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
